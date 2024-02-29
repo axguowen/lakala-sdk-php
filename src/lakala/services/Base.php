@@ -105,12 +105,12 @@ abstract class Base
 
     /**
      * 校验签名
-     * @access protected
+     * @access public
      * @param string $authorization
      * @param string $body
      * @return bool
      */
-	protected function signatureVerification($authorization, $body = '')
+	public function signatureVerification($authorization, $body = '')
     {
         // 过滤算法标识
         $authorization = trim(str_replace(static::SIGNATURE_ALGO, '', $authorization));
