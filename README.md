@@ -88,5 +88,5 @@ $counterOrderSpecialCreate = $aggregationCashdesk->counterOrderSpecialCreate('or
     'notify_url' => 'http://xxx.xxx.com/notify',
 ]);
 // 打印创建结果
-var_dump($counterOrderQuery);
+var_dump($counterOrderSpecialCreate);
 ~~~
