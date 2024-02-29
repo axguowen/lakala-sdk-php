@@ -135,12 +135,15 @@ abstract class Base
      * 发送POST请求
      * @access protected
      * @param string $path 请求接口
-     * @param array $body 请求参数
+     * @param array|string $body 请求参数
      * @return array
      */
-    protected function post($path, array $body = [])
+    protected function post($path, $body = [])
     {
-        $body = json_encode($body, JSON_UNESCAPED_UNICODE);
+        // 如果是数组
+        if(is_array($body)) {
+            $body = json_encode($body, JSON_UNESCAPED_UNICODE);
+        }
         // 获取鉴权信息
         $authorization = $this->getAuthorization($body);
         // 构造请求头
@@ -197,12 +200,15 @@ abstract class Base
      * 发送PUT请求
      * @access protected
      * @param string $path 请求接口
-     * @param array $body 请求参数
+     * @param array|string $body 请求参数
      * @return array
      */
-    protected function put($path, array $body = [])
+    protected function put($path, $body = [])
     {
-        $body = json_encode($body, JSON_UNESCAPED_UNICODE);
+        // 如果是数组
+        if(is_array($body)) {
+            $body = json_encode($body, JSON_UNESCAPED_UNICODE);
+        }
         // 获取鉴权信息
         $authorization = $this->getAuthorization($body);
         // 构造请求头
@@ -227,12 +233,15 @@ abstract class Base
      * 发送PATCH请求
      * @access protected
      * @param string $path 请求接口
-     * @param array $body 请求参数
+     * @param array|string $body 请求参数
      * @return array
      */
-    protected function patch($path, array $body = [])
+    protected function patch($path, $body = [])
     {
-        $body = json_encode($body, JSON_UNESCAPED_UNICODE);
+        // 如果是数组
+        if(is_array($body)) {
+            $body = json_encode($body, JSON_UNESCAPED_UNICODE);
+        }
         // 获取鉴权信息
         $authorization = $this->getAuthorization($body);
         // 构造请求头
