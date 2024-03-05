@@ -51,7 +51,16 @@ abstract class Base
      */
     public function __construct($options)
     {
+        // 合并配置
         $this->options = array_merge($this->options, $options);
+        // 获取证书私钥内容
+        if(isset($this->options['private_key']) && preg_match('/\.pem$/s', $this->options['private_key']) && file_exists($this->options['private_key'])){
+            $this->options['private_key'] = file_get_contents($this->options['private_key']);
+        }
+        // 获取异步通知验签证书内容
+        if(isset($this->options['certificate']) && preg_match('/\.cer$/s', $this->options['certificate']) && file_exists($this->options['certificate'])){
+            $this->options['certificate'] = file_get_contents($this->options['certificate']);
+        }
     }
 
     /**
