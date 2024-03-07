@@ -71,7 +71,7 @@ abstract class Base
     protected function getBaseUrl()
     {
         // 如果是测试环境
-        if (true === $this->options['test_env']) {
+        if (isset($this->options['test_env']) && !empty($this->options['test_env'])) {
             return $this->baseUrlTest;
         }
         // 生产环境
