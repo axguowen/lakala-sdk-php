@@ -113,13 +113,36 @@ abstract class Base
 	}
 
     /**
-     * 校验签名
+     * 获取通知数据
      * @access public
+     * @param string $authorization
+     * @param string $body
+     * @return array
+     */
+    public function getNotifyData($authorization, $body = '')
+    {
+        // 校验签名
+        if(true !== $this->signatureVerification($authorization, $body)){
+            return [null, new \Exception('签名校验未通过')];
+        }
+        // 获取异步通知内容
+        $notifyData = json_decode($body, true);
+        // 如果没有订单ID
+        if(!is_array($notifyData) || !isset($notifyData['out_order_no'])){
+            return [null, new \Exception('支付通知数据错误')];
+        }
+        // 返回
+        return [$notifyData, null];
+    }
+
+    /**
+     * 校验签名
+     * @access protected
      * @param string $authorization
      * @param string $body
      * @return bool
      */
-	public function signatureVerification($authorization, $body = '')
+	protected function signatureVerification($authorization, $body = '')
     {
         // 过滤算法标识
         $authorization = trim(str_replace(static::SIGNATURE_ALGO, '', $authorization));
@@ -164,13 +187,13 @@ abstract class Base
         // 发送请求
         $ret = HttpClient::post($this->getBaseUrl() . $path, $body, $headers);
         if (!$ret->ok()) {
-            throw new \Exception($ret->error, $ret->statusCode);
+            [null, new \Exception($ret->error, $ret->statusCode)];
         }
         // 如果响应体为空
         if(!is_null($ret->body)){
-            return $ret->json();
+            return [$ret->json(), null];
         }
-        return [];
+        return [null, new \Exception('响应体为空', 400)];
     }
 
     /**
@@ -196,13 +219,13 @@ abstract class Base
         // 发送请求
         $ret = HttpClient::get($this->getBaseUrl() . $path, $headers);
         if (!$ret->ok()) {
-            throw new \Exception($ret->error, $ret->statusCode);
+            [null, new \Exception($ret->error, $ret->statusCode)];
         }
         // 如果响应体为空
         if(!is_null($ret->body)){
-            return $ret->json();
+            return [$ret->json(), null];
         }
-        return [];
+        return [null, new \Exception('响应体为空', 400)];
     }
 
     /**
@@ -229,13 +252,13 @@ abstract class Base
         // 发送请求
         $ret = HttpClient::put($this->getBaseUrl() . $path, $body, $headers);
         if (!$ret->ok()) {
-            throw new \Exception($ret->error, $ret->statusCode);
+            [null, new \Exception($ret->error, $ret->statusCode)];
         }
         // 如果响应体为空
         if(!is_null($ret->body)){
-            return $ret->json();
+            return [$ret->json(), null];
         }
-        return [];
+        return [null, new \Exception('响应体为空', 400)];
     }
 
     /**
@@ -262,13 +285,13 @@ abstract class Base
         // 发送请求
         $ret = HttpClient::patch($this->getBaseUrl() . $path, $body, $headers);
         if (!$ret->ok()) {
-            throw new \Exception($ret->error, $ret->statusCode);
+            [null, new \Exception($ret->error, $ret->statusCode)];
         }
         // 如果响应体为空
         if(!is_null($ret->body)){
-            return $ret->json();
+            return [$ret->json(), null];
         }
-        return [];
+        return [null, new \Exception('响应体为空', 400)];
     }
 
     /**
@@ -294,12 +317,12 @@ abstract class Base
         // 发送请求
         $ret = HttpClient::delete($this->getBaseUrl() . $path, $headers);
         if (!$ret->ok()) {
-            throw new \Exception($ret->error, $ret->statusCode);
+            [null, new \Exception($ret->error, $ret->statusCode)];
         }
         // 如果响应体为空
         if(!is_null($ret->body)){
-            return $ret->json();
+            return [$ret->json(), null];
         }
-        return [];
+        return [null, new \Exception('响应体为空', 400)];
     }
 }
